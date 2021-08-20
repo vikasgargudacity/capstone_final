@@ -1,4 +1,5 @@
-<include a CircleCI status badge, here>
+## CircleCI status badge  
+
 
 ## Project Overview
 
@@ -22,21 +23,104 @@ You can find a detailed [project rubric, here](https://review.udacity.com/#!/rub
 **The final implementation of the project will showcase your abilities to operationalize production microservices.**
 
 ---
+Steps followed for this project are as below: 
 
-## Setup the Environment
+- Imported the GIT repository into my GITHUB location. 
 
-* Create a virtualenv and activate it
-* Run `make install` to install the necessary dependencies
+```bash
+from "https://github.com/udacity/DevOps_Microservices.git"  to 
+"https://github.com/vikasgargudacity/DevOps_Microservices.git"
+```
 
-### Running `app.py`
+- Created an EC2 instance t2.medium and increased the storage to 60GB with SSH 22 port being open. Please note use the the Cloud 9 image as required. 
 
-1. Standalone:  `python app.py`
-2. Run in Docker:  `./run_docker.sh`
-3. Run in Kubernetes:  `./run_kubernetes.sh`
+- Logged in using UBUNTU terminal from Windows Desktop and SSH into the system. 
 
-### Kubernetes Steps
+- Ran the command below to clone the repository from GITHUB to EC2 instance and then CD into the directory. 
+```bash
+git clone https://github.com/vikasgargudacity/DevOps_Microservices
+cd DevOps_Microservices/project-ml-microservice-kubernetes
+```
 
-* Setup and Configure Docker locally
-* Setup and Configure Kubernetes locally
-* Create Flask app in Container
-* Run via kubectl
+- Installing various dependencies related to Python3 Virtual environment , make commnand etc.
+```bash
+sudo apt-get update
+sudo apt-get install python3-venv 
+sudo apt-get install make
+```
+
+- Create (and activate) a new environment, named .devops with Python 3. If prompted to proceed with the install (Proceed [y]/n) type y.
+```bash
+python3 -m venv ~/.devops
+source ~/.devops/bin/activate
+```
+
+- Updated the requirements.txt to inlude pylint and pytest and then run install all the required libraries, dependencies as per requirements file. 
+```bash
+make install
+```
+
+- Install hadolint
+```bash
+wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
+sudo chmod +x /bin/hadolint
+```
+
+- Update the app.py file on line number 23. remove the 'f' from the line below. 
+```bash
+html = **f**"<h3>Sklearn Prediction Home</h3>"
+```
+
+- Run the lint command to run the lint for the Dockerfile and app.py
+```bash
+make lint
+```
+
+- Start the docker service 
+```bash
+sudo service docker start
+```
+
+- Install kubetcl as per the instructions from the link below. 
+```bash
+https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+```
+
+- Install & start minikube as per the instructions from the link below.
+```bash
+https://minikube.sigs.k8s.io/docs/start/
+```
+
+- Complete the docker file as per the instructions given in the Proejct under "Details project Tasks" page
+- Once the above step is done, re-run the make link command to check there are no errors introduced in the Dockerfile 
+```bash
+make lint
+```
+
+- Update the run_docker.sh as per the instructions given in the Proejct under "Details project Tasks" page
+- Once the above step is done, run the run_docker.sh file to create the docker image and listen on the port 80
+```bash
+./run_docker.sh
+```
+- run the make_prediction.sh file for displaying the prediction output 
+```bash
+ ./make_prediction.sh
+ ```
+- run the upload_docker.sh file for to upload an image to docker 
+```bash
+ ./upload_docker.sh
+```
+ 
+Task 5: Configure Kubernetes to Run Locally
+- run the below command to start the minikube and check if the cluster is running. 
+```bash
+ minikube start
+ kubectl config view
+```
+Task 6: Deploy with Kubernetes and Save Output Logs
+
+- Update the run_kubernetes.sh as per the instructions given in the Proejct under "Details project Tasks" page
+- run the run_kubernetes.sh file
+```bash
+./run_kubernetes.sh
+```
