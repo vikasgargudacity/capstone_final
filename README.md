@@ -1,5 +1,5 @@
 ## CircleCI status badge  
-
+[![CircleCI](https://circleci.com/gh/vikasgargudacity/project4_final/tree/master.svg?style=svg)](https://circleci.com/gh/vikasgargudacity/project4_final/tree/master)
 
 ## Project Overview
 
