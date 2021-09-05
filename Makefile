@@ -6,28 +6,16 @@ CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
 install-for-build:
 	# This should be run from inside a virtualenv
 	pip install --upgrade pip &&\
-		pip install -r requirements.txt
+	pip install -r requirements.txt
 
 install-hadolint:
-	sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
-	sudo chmod +x /bin/hadolint
+	./install_hadolint.sh
 
 install-kubectl:
-	curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/kubectl
-	chmod +x ./kubectl
-	sudo mv ./kubectl /usr/local/bin
-	echo 'export PATH=$PATH:$HOME/bin' >> ~/.bash_profile
-	kubectl version --short --client
+	./install_kubectl.sh
 
 install-eksctl:
-	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-	sudo mv /tmp/eksctl /usr/local/bin
-	eksctl version
-
-test:
-	# Additional, optional, tests could go here
-	#python -m pytest -vv --cov=myrepolib tests/*.py
-	#python -m pytest --nbval notebook.ipynb
+	./install_eksctl.sh
 
 lint:
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
@@ -52,7 +40,6 @@ create-eks-cluster:
 kubernetes-deployment: eks-create-cluster
 	./run_kubernetes.sh
 
-
 rolling-update:
 	./rolling_updates.sh
 
@@ -69,5 +56,3 @@ cleanup-resources:
 delete-eks-cluster:
 	# delete the cluster
 	./delete_eks_cluster.sh
-
-all: install lint test
