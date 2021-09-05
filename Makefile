@@ -1,19 +1,28 @@
 ## The Makefile includes instructions on environment setup and lint tests
-# Create and activate a virtual environment
-# Install dependencies in requirements.txt
-# Dockerfile should pass hadolint
-# app.py should pass pylint
-# (Optional) Build a simple integration test
+CLUSTER="Capstone-proj-vikas"
+REGION="us-west-2"
+CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
 
-setup:
-	# Create python virtualenv & source it
-	# source ~/.devops/bin/activate
-	python3 -m venv ~/.devops
-
-install:
+install-for-build:
 	# This should be run from inside a virtualenv
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
+
+install-hadolint:
+	sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
+	sudo chmod +x /bin/hadolint
+
+install-kubectl:
+	curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/kubectl
+	chmod +x ./kubectl
+	sudo mv ./kubectl /usr/local/bin
+	echo 'export PATH=$PATH:$HOME/bin' >> ~/.bash_profile
+	kubectl version --short --client
+
+install-eksctl:
+	curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+	sudo mv /tmp/eksctl /usr/local/bin
+	eksctl version
 
 test:
 	# Additional, optional, tests could go here
@@ -27,5 +36,38 @@ lint:
 	# This is a linter for Python source code linter: https://www.pylint.org/
 	# This should be run from inside a virtualenv
 	pylint --disable=R,C,W1203 app.py
+
+build-docker:
+	./build_docker.sh
+
+run-docker: build-docker
+	./run_docker.sh
+
+upload-docker: build-docker
+	./upload_docker.sh
+
+create-eks-cluster:
+	./create_eks_cluster.sh
+
+kubernetes-deployment: eks-create-cluster
+	./run_kubernetes.sh
+
+
+rolling-update:
+	./rolling_updates.sh
+
+rollout-status:
+	./rollout_status.sh
+
+rollback:
+	./rollback.sh
+
+cleanup-resources:
+	# Remove service & deployment
+	./cleanup_resources.sh
+
+delete-eks-cluster:
+	# delete the cluster
+	./delete_eks_cluster.sh
 
 all: install lint test
