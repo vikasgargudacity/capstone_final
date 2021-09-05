@@ -3,43 +3,45 @@
 
 ## Project Overview
 
-In this project, you will apply the skills you have acquired in this course to operationalize a Machine Learning Microservice API. 
-
-You are given a pre-trained, `sklearn` model that has been trained to predict housing prices in Boston according to several features, such as average rooms in a home and data about highway access, teacher-to-pupil ratios, and so on. You can read more about the data, which was initially taken from Kaggle, on [the data source site](https://www.kaggle.com/c/boston-housing). This project tests your ability to operationalize a Python flask app—in a provided file, `app.py`—that serves out predictions (inference) about housing prices through API calls. This project could be extended to any pre-trained machine learning model, such as those for image recognition and data labeling.
+This capstone project showcases the use of several CI/CD tools and cloud services covered in the program [Udacity - AWS Cloud DevOps Engineer.](https://www.udacity.com/course/cloud-dev-ops-nanodegree--nd9991)
 
 ### Project Tasks
 
-Your project goal is to operationalize this working, machine learning microservice using [kubernetes](https://kubernetes.io/), which is an open-source system for automating the management of containerized applications. In this project you will:
-* Test your project code using linting
-* Complete a Dockerfile to containerize this application
-* Deploy your containerized application using Docker and make a prediction
-* Improve the log statements in the source code for this application
-* Configure Kubernetes and create a Kubernetes cluster
-* Deploy a container using Kubernetes and make a prediction
-* Upload a complete Github repo with CircleCI to indicate that your code has been tested
+Using a CI/CD approach, we build a [Docker](https://www.docker.com/resources/what-container) image and then run it in a [Kubernetes](https://kubernetes.io/) cluster.
 
-You can find a detailed [project rubric, here](https://review.udacity.com/#!/rubrics/2576/view).
+The project includes the following main tasks:
 
-**The final implementation of the project will showcase your abilities to operationalize production microservices.**
+* Initialize the Python virtual environment 
+* Install all necessary dependencies 
+* Lints Dockerfile and python code
+* Create a Dockerfile to "containerize" the housing price prediction application
+* Deploy to a public Docker Registry the containerized application 
+* Deploy a Kubernetes cluster
+* Deploy the application
+* Update the app in the cluster, using a rolling-update strategy
+* Delete the cluster
+
+The CirclCI pipeline([config.yml](.circleci/config.yml)) will execute the following steps automatically:
+
+* `make setup`
+* `make install`
+* `make lint`
+* Build and publish the container image
+
+To verify that the app is working, write your deployment's IP into your browser using port 80, like
+`http://localhost:80` or `http://LOAD_BALANCER_IP:80` (according to your environment).
 
 ---
 Steps followed for this project are as below: 
 
-- Imported the GIT repository into my GITHUB location. 
-
-```bash
-from "https://github.com/udacity/DevOps_Microservices.git"  to 
-"https://github.com/vikasgargudacity/DevOps_Microservices.git"
-```
-
-- Created an EC2 instance t2.medium and increased the storage to 60GB with SSH 22 port being open. Please note use the the Cloud 9 image as required. 
+- Created an EC2 instance t2.medium and increased the storage to 60GB with SSH 22 port being open. Please note use the the Cloud9 image (ami-06f90483830cf9c0e) as required to ensure it installs the required Python version 3.7. 
 
 - Logged in using UBUNTU terminal from Windows Desktop and SSH into the system. 
 
 - Ran the command below to clone the repository from GITHUB to EC2 instance and then CD into the directory. 
 ```bash
-git clone https://github.com/vikasgargudacity/DevOps_Microservices
-cd DevOps_Microservices/project-ml-microservice-kubernetes
+git clone https://github.com/vikasgargudacity/vikas_capstone
+cd vikas_capstone
 ```
 
 - Installing various dependencies related to Python3 Virtual environment , make commnand etc.
