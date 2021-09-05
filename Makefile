@@ -31,7 +31,10 @@ build-docker:
 run-docker: build-docker
 	./run_docker.sh
 
-upload-docker: build-docker
+make-prediction:
+	./make_prediction.sh
+
+upload-docker:
 	./upload_docker.sh
 
 create-eks-cluster:
