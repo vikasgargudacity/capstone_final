@@ -37,7 +37,7 @@ upload-docker: build-docker
 create-eks-cluster:
 	./create_eks_cluster.sh
 
-kubernetes-deployment: eks-create-cluster
+kubernetes-deployment: create-eks-cluster
 	./run_kubernetes.sh
 
 rolling-update:
