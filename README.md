@@ -32,7 +32,7 @@ To verify that the app is working, write your deployment's IP into your browser 
 `http://localhost:80` or `http://LOAD_BALANCER_IP:80` (according to your environment).
 
 ---
-Steps followed for this project are as below: 
+### Steps followed for this project are as below: 
 
 - Created an EC2 instance t2.medium and increased the storage to 60GB with SSH 22 port being open. Please note use the the Cloud9 image (ami-06f90483830cf9c0e) as required to ensure it installs the required Python version 3.7. 
 
@@ -53,25 +53,44 @@ sudo apt-get install make
 
 - Create (and activate) a new environment, named .devops with Python 3. If prompted to proceed with the install (Proceed [y]/n) type y.
 ```bash
-python3 -m venv ~/.devops
-source ~/.devops/bin/activate
+python3 -m venv ~/.capstone
+source ~/.capstone/bin/activate
 ```
 
 - Updated the requirements.txt to inlude pylint and pytest and then run install all the required libraries, dependencies as per requirements file. 
 ```bash
-make install
+make install-for-build
 ```
 
 - Install hadolint
 ```bash
-wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64
-sudo chmod +x /bin/hadolint
+make install-hadolint
 ```
 
-- Update the app.py file on line number 23. remove the 'f' from the line below. 
+- Install kubectl
+```bash
+make install-kubectl
+```
+- Install eksctl
+```bash
+make install-eksctl
+```
+
+- Update the app.py file on line number 23. add the 'f' on the line below to create a lint error. 
 ```bash
 html = **f**"<h3>Sklearn Prediction Home</h3>"
 ```
+
+- Run the lint command to run the lint for the Dockerfile and app.py. The lint command will show the error. 
+```bash
+make lint
+```
+
+- Update the app.py file on line number 23. remove the 'f' on the line below to fix the lint error.  
+```bash
+html = **f**"<h3>Sklearn Prediction Home</h3>"
+```
+
 
 - Run the lint command to run the lint for the Dockerfile and app.py
 ```bash
@@ -83,46 +102,40 @@ make lint
 sudo service docker start
 ```
 
-- Install kubetcl as per the instructions from the link below. 
+- Run the Docker file
 ```bash
-https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+make run-docker
 ```
 
-- Install & start minikube as per the instructions from the link below.
+- run the make-prediction 
 ```bash
-https://minikube.sigs.k8s.io/docs/start/
-```
-
-- Complete the docker file as per the instructions given in the Proejct under "Details project Tasks" page
-- Once the above step is done, re-run the make link command to check there are no errors introduced in the Dockerfile 
-```bash
-make lint
-```
-
-- Update the run_docker.sh as per the instructions given in the Proejct under "Details project Tasks" page
-- Once the above step is done, run the run_docker.sh file to create the docker image and listen on the port 80
-```bash
-./run_docker.sh
-```
-- run the make_prediction.sh file for displaying the prediction output 
-```bash
- ./make_prediction.sh
+ make make-prediction 
  ```
+
 - run the upload_docker.sh file for to upload an image to docker 
 ```bash
- ./upload_docker.sh
+make upload-docker
 ```
  
-Task 5: Configure Kubernetes to Run Locally
-- run the below command to start the minikube and check if the cluster is running. 
+- configure the AWS environment parameters
 ```bash
- minikube start
- kubectl config view
+AWS Access Key ID [None]: ------ 
+AWS Secret Access Key [None]: ----- 
+Default region name [None]: us-west-2
+Default output format [None]:
 ```
-Task 6: Deploy with Kubernetes and Save Output Logs
 
-- Update the run_kubernetes.sh as per the instructions given in the Proejct under "Details project Tasks" page
-- run the run_kubernetes.sh file
+- create Kubernetes cluster Deployments and Services.  
 ```bash
-./run_kubernetes.sh
+make kubernetes-deployment
+```
+
+- perform the rolling updates
+```bash
+make rolling-update
+```
+
+- delete the deployments, services and EKS clusters created.
+```bash
+make delete-eks-cluster
 ```
