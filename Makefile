@@ -1,5 +1,5 @@
 ## The Makefile includes instructions on environment setup and lint tests
-CLUSTER="Capstone-proj-vikas"
+CLUSTER="capstone-proj"
 REGION="us-west-2"
 CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
 
