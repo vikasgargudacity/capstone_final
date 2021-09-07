@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capstone-proj-deployment
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: capstone-proj
+  template:
+    metadata:
+      labels:
+        app: capstone-proj
+    spec:
+      containers:
+        - name: capstone-proj
+          image:vikasgarg0385/capstone-proj:latest
+          ports:
+            - containerPort: 80
