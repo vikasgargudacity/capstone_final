@@ -1,22 +1,11 @@
 #!/usr/bin/env bash
 
-# This tags and uploads an image to Docker Hub
-
-DEPLOYMENT_NAME=capstone-proj
-CONTAINER_PORT=80
+# Step 1
+# Run the Docker Hub container with kubernetes
+kubectl apply -f deployment.yaml
+kubectl apply -f services.yaml
 
 # Step 1:
-# This is your Docker ID/path
-# dockerpath=<>
-dockerpath=vikasgarg0385/capstone-proj:latest
-
-# Step 2
-# Run the Docker Hub container with kubernetes
-kubectl create deployment ${DEPLOYMENT_NAME} --image=${dockerpath}  &&
-    kubectl expose deployment/${DEPLOYMENT_NAME} --type="LoadBalancer" --port ${CONTAINER_PORT}
-
-
-# Step 3:
 # List kubernetes details
 echo "Listing deployments"
 kubectl get deployments -o wide
