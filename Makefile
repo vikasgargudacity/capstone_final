@@ -4,6 +4,7 @@ REGION="us-west-2"
 CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
 
 install-for-build:
+	sudo apt install awscli
 	sudo apt-get install -y nodejs npm
 	sudo apt-get install docker.io
 	sudo npm install -g htmllint-cli

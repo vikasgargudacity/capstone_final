@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-DEPLOYMENT_NAME=capstone-proj
+DEPLOYMENT_NAME=capstone-proj-deployment
 # Remove service & deployment
 kubectl delete services ${DEPLOYMENT_NAME}
 echo

@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: capstone-proj
-          image:vikasgarg0385/capstone-proj:latest
+          image: vikasgarg0385/capstone-proj:latest
           ports:
             - containerPort: 80
