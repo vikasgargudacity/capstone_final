@@ -11,8 +11,6 @@ if kubectl config get-clusters | grep -q ${CLUSTER_NAME}; then
 else
     echo "============================================================"
     echo "Creating cluster..."
-    eksctl create cluster --name ${CLUSTER}-cluster --version 1.17 \
-        --region us-west-2 --nodegroup-name ${CLUSTER}-nodes --node-type t3.small \
-        --nodes-min 2 --nodes-max 3 --ssh-access --ssh-public-key capstone --managed
+    eksctl create cluster --config-file=config_cluster.yaml
 fi
 
