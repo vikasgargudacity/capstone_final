@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This file tags and uploads an image to Docker Hub
 
-# Assumes that an image is built via `run_docker.sh`
+# Assumes that an image is built via `build_docker.sh`
 
 # Step 1:
 # Create dockerpath
@@ -17,4 +17,3 @@ sudo docker login -u "vikasgarg0385" docker.io
 # Step 3:
 # Push image to a docker repository
 sudo docker push $dockerpath
-
