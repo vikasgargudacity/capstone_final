@@ -45,11 +45,11 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }
+          key: v1-dependencies-{{ checksum "requirements.txt" })
       - run:
           name: run lint
           command: |
-            . venv/bin/activate
+            source ~/.capstone/bin/activate
             # make lint for Docker file and index.html
             make lint
             
