@@ -95,14 +95,14 @@ jobs:
             
             aws configure list
 
+            # Create Kubernetes Cluster
+            make create-eks-cluster
+            
+            # Create deployments and Services
+#            make deploy-kubernetes
             kubectl apply -f deployment.yml
             kubectl apply -f service.yml
 
-            # Create Kubernetes Cluster
-#            make create-eks-cluster
-            
-            # Create deployments and Services
-#            make deploy-kubernetes                    
           
   deploy-rolling-update-kubernetes:
     docker:
