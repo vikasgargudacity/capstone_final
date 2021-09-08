@@ -40,8 +40,8 @@ To verify that the app is working, write your deployment's IP into your browser 
 
 - Ran the command below to clone the repository from GITHUB to EC2 instance and then CD into the directory. 
 ```bash
-git clone https://github.com/vikasgargudacity/vikas_capstone
-cd vikas_capstone
+git clone https://github.com/vikasgargudacity/capstone
+cd capstone
 ```
 
 - Installing various dependencies related to Python3 Virtual environment , make commnand etc.
@@ -76,23 +76,7 @@ make install-kubectl
 make install-eksctl
 ```
 
-- Update the app.py file on line number 23. add the 'f' on the line below to create a lint error. 
-```bash
-html = **f**"<h3>Sklearn Prediction Home</h3>"
-```
-
-- Run the lint command to run the lint for the Dockerfile and app.py. The lint command will show the error. 
-```bash
-make lint
-```
-
-- Update the app.py file on line number 23. remove the 'f' on the line below to fix the lint error.  
-```bash
-html = **f**"<h3>Sklearn Prediction Home</h3>"
-```
-
-
-- Run the lint command to run the lint for the Dockerfile and app.py
+- Run the lint command to run the lint for the Dockerfile and index.html
 ```bash
 make lint
 ```
@@ -104,13 +88,8 @@ sudo service docker start
 
 - Run the Docker file
 ```bash
-make run-docker
+make build-docker
 ```
-
-- run the make-prediction 
-```bash
- make make-prediction 
- ```
 
 - run the upload_docker.sh file for to upload an image to docker 
 ```bash
@@ -125,14 +104,20 @@ Default region name [None]: us-west-2
 Default output format [None]:
 ```
 
-- create Kubernetes cluster Deployments and Services.  
+- create Kubernetes clusters.  
 ```bash
-make kubernetes-deployment
+make create-eks-cluster
 ```
+
+- create Kubernetes deployments and Services.   
+```bash
+make create-eks-cluster
+```
+
 
 - perform the rolling updates
 ```bash
-make rolling-update
+make deploy-kubernetes
 ```
 
 - delete the deployments, services and EKS clusters created.
