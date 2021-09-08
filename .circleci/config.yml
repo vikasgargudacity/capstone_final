@@ -12,7 +12,7 @@ jobs:
   build:
     docker:
       # Use the same Docker base as the project
-      - image: cimg/base:2021.04
+      - image: ubuntu
       
     working_directory: ~/repo
     
