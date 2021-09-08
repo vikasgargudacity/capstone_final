@@ -1,6 +1,6 @@
   
 #!/usr/bin/env bash
-DEPLOYMENT_NAME = capstone-proj-deployment
+DEPLOYMENT_NAME=capstone-proj-deployment
 DOCKER_IMAGE="capstone-proj:latest"
 CONTAINER_PORT=80
 dockerpath=vikasgarg0385/${DOCKER_IMAGE}
