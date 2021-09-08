@@ -74,7 +74,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [build]      
+          keys: [capstone]
       - add_ssh_keys:
           fingerprints: ["3e:10:02:47:73:2f:2b:3f:a2:28:44:0c:ed:80:6a:29"]
       - run:
@@ -101,10 +101,15 @@ jobs:
             
             # Create deployments and Services
             make deploy-kubernetes
-            
+      - save_cache:
+          paths: [ ~/.capstone/bin/activate]
+          key: capstone
+          
 workflows:
   default:
     jobs:
       - build
+      - push-docker-image:
+          requires: [build]
       - deploy-new: 
-          requires: [docker/publish]
+          requires: [push-docker-image]
