@@ -120,6 +120,8 @@ make create-eks-cluster
 make deploy-kubernetes
 ```
 
+# Kubenetes architecture with a Master Node (Control Plane) and two sub nodes will be created. There will be load balancer which will be created under the first stack. Take the Load Balancer Name from the Resources Section of the Stacks being created for the Master Cluster and try that it should display the required HTML page.  
+
 - delete the deployments, services and EKS clusters created.
 ```bash
 make delete-eks-cluster
