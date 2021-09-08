@@ -56,7 +56,7 @@ jobs:
       - run:
           name: Build & uploading the Docker image
           command: |
-            # sudo service docker start
+            sudo service docker start
 
             # Building Docker Image
             sudo docker build --tag=$DOCKER_IMAGE .
