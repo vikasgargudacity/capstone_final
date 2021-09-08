@@ -95,11 +95,11 @@ jobs:
             aws configure list
 
             # Create Kubernetes Cluster
-            # make create-eks-cluster
+            make create-eks-cluster
             
             # Create deployments and Services
             # make deploy-kubernetes
-            # kubectl apply -f deployment.yml
+            kubectl apply -f deployment.yml
             kubectl apply -f services.yml
   
           
@@ -148,11 +148,10 @@ jobs:
 workflows:
   default:
     jobs:
-#      - build
-#      - push-docker-image:
-#          requires: [build]
-#      - deploy-kubernetes:
-      - deploy-kubernetes
-#          requires: [push-docker-image]
+      - build
+      - push-docker-image:
+          requires: [build]
+      - deploy-kubernetes:
+          requires: [push-docker-image]
 #      - deploy-rolling-update-kubernetes:
 #          requires: [push-docker-image]
