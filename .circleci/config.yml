@@ -83,10 +83,16 @@ jobs:
           command: |
             
             # Install kubectl
-            make install-kubectl
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/kubectl
+            sudo chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin
+            sudo echo 'export PATH=$PATH:$HOME/bin' >> ~/.bash_profile
+            kubectl version --short --client
             
             # Install eksctl
-            make install-eksctl
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            eksctl version
             
             # Install awscli 
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
