@@ -3,12 +3,14 @@ CLUSTER="capstone-proj"
 REGION="us-west-2"
 CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
 
-install-for-build:
-	sudo apt install awscli
+install-dependencies:
 	sudo apt-get install -y nodejs npm
 	sudo apt-get install docker.io
 	sudo npm install -g htmllint-cli
 	htmllint init
+
+install-awscli:
+	sudo apt install awscli
 
 install-hadolint:
 	./install_hadolint.sh
