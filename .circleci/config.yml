@@ -68,7 +68,7 @@ jobs:
             
   deploy-new:
     docker:
-      - image: amazon/aws-cli
+      - image: python:3.7.3-stretch
       
     working_directory: ~/repo
 
@@ -89,7 +89,9 @@ jobs:
             make install-eksctl
             
             # Install awscli 
-            make install-awscli
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
 
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
