@@ -94,12 +94,15 @@ jobs:
             export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
             
             aws configure list
-            
+
+            kubectl apply -f deployment.yml
+            kubectl apply -f service.yml
+
             # Create Kubernetes Cluster
-            make create-eks-cluster
+#            make create-eks-cluster
             
             # Create deployments and Services
-            make deploy-kubernetes                    
+#            make deploy-kubernetes                    
           
   deploy-rolling-update-kubernetes:
     docker:
@@ -140,7 +143,8 @@ jobs:
             
             aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name capstone-proj
             
-            make rolling-update
+#            make rolling-update
+            kubectl set image deployment/capstone-proj-rolling capstone-proj=vikasgarg0385/${DEPLOYMENT_NAME}:latest
 
 workflows:
   default:
