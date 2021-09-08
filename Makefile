@@ -10,7 +10,7 @@ install-dependencies:
 	sudo htmllint init
 
 install-awscli:
-	sudo apt install awscli
+	apt install awscli
 
 install-hadolint:
 	./install_hadolint.sh
