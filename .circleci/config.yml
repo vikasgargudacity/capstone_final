@@ -32,7 +32,7 @@ jobs:
             # Create virtual environment
             python3 -m venv venv
             . venv/bin/activate
-
+            apt-get install -y sudo 
       - run:
           name: Install dependencies
           command: |            
