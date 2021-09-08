@@ -18,6 +18,14 @@ jobs:
     
     steps:
       - checkout
+      
+    # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+            - v1-dependencies      
+      
       # Create the reqiured virtual environment and install the dependent libraries
       - run:
           name: Create vitual environment
@@ -38,6 +46,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }
       - run:
           name: run lint
           command: |
