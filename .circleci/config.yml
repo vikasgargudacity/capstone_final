@@ -6,13 +6,13 @@ version: 2.1
 
 
 orbs:
-  docker: Ubuntu2004
+  docker: circleci/docker@1.6.0
     
 jobs:
   build:
     docker:
       # Use the same Docker base as the project
-      - image: circleci/node:13.8.0
+      - image: cimg/base:2021.04
       
     working_directory: ~/repo
     
