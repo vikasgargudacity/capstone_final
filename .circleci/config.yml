@@ -148,10 +148,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - deploy-rolling-update-kubernetes1
-workflows:
-  default:
-    jobs:
 #      - build
 #      - push-docker-image:
 #          requires: [build]
