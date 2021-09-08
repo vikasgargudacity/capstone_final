@@ -33,7 +33,7 @@ jobs:
             # Create virtual environment
             sudo apt-get install python3-venv
             python3 -m venv ~/.capstone
-            source ~/.venv/bin/activate
+            source ~/.capstone/bin/activate
       - run:
           name: Install dependencies
           command: |            
