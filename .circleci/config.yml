@@ -56,14 +56,22 @@ jobs:
           keys: [capstone]      
       - setup_remote_docker
       - run:
-          name: Build Docker image
+          name: Build & uploading the Docker image
           command: |
-            make build-docker
-            make upload-docker
+            sudo service docker start
+
+            # Building Docker Image
+            sudo docker build --tag=$DOCKER_IMAGE .
+            sudo docker run -t --rm -p 80:80 $DOCKER_IMAGE
+            
+            # Upload Docker Image
+            sudo docker tag capstone-proj:latest $DOCKERHUB_USERID/$DOCKER_IMAGE
+            sudo docker login -u "$DOCKERHUB_USERID" -p $DOCKERHUB_PASSWORD docker.io            
+            sudo docker push $DOCKERHUB_USERID/$DOCKER_IMAGE                        
+            
       - save_cache:
           paths: [ ~/.capstone/bin/activate]
           key: capstone
-
 
   deploy-new:
     docker:
