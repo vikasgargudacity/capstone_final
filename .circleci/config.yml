@@ -59,12 +59,12 @@ jobs:
           name: Build & uploading the Docker image
           command: |
             # Building Docker Image
-            docker build -t vikasgarg0385/capstone-project:latest .
+            docker build -t DOCKERHUB_IMAGE .
             docker image ls
             
             # Upload Docker Image
-            sudo docker login -u vikasgarg0385 -p Arisia1111%            
-            docker push vikasgarg0385/capstone-project:latest                        
+            docker login -u $DOCKERHUB_USERID -p $DOCKERHUB_PASSWORD
+            docker push DOCKERHUB_IMAGE                      
             
   deploy-new:
     docker:
