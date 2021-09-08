@@ -17,11 +17,6 @@ jobs:
     
     steps:
       - checkout
-      
-    # Download and cache dependencies
-      - restore_cache:
-          keys: [capstone]
-      # Create the reqiured virtual environment and install the dependent libraries
       - run:
           name: Create vitual environment
           command: |
@@ -42,10 +37,6 @@ jobs:
             source ~/.capstone/bin/activate
             # make lint for Docker file and index.html
             make lint
-      - save_cache:
-          paths: [ ~/.capstone/bin/activate]
-          key: capstone
-
 
   push-docker-image:
     docker:
@@ -74,8 +65,6 @@ jobs:
 
     steps:
       - checkout
-      - restore_cache:
-          keys: [capstone]
       - add_ssh_keys:
           fingerprints: ["3e:10:02:47:73:2f:2b:3f:a2:28:44:0c:ed:80:6a:29"]
       - run:
@@ -110,10 +99,47 @@ jobs:
             
             # Create deployments and Services
             make deploy-kubernetes
-      - save_cache:
-          paths: [ ~/.capstone/bin/activate]
-          key: capstone
+          
+  deploy-test:
+    docker:
+      - image: cimg/base:2021.07
+      
+    working_directory: ~/repo
 
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["3e:10:02:47:73:2f:2b:3f:a2:28:44:0c:ed:80:6a:29"]
+      - run:
+          name: install dependencies
+          command: |
+            
+            # Install kubectl
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/kubectl
+            sudo chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin
+            sudo echo 'export PATH=$PATH:$HOME/bin' >> ~/.bash_profile
+            kubectl version --short --client
+            
+            # Install eksctl
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            eksctl version
+            
+            # Install awscli 
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+            
+            aws configure list
+            
+            make deploy-kubernetes
+          
+          
   deploy-rolling-update-kubernetes:
     docker:
       - image: cimg/base:2021.07
@@ -122,8 +148,6 @@ jobs:
 
     steps:
       - checkout
-      - restore_cache:
-          keys: [capstone]
       - add_ssh_keys:
           fingerprints: ["3e:10:02:47:73:2f:2b:3f:a2:28:44:0c:ed:80:6a:29"]
       - run:
@@ -160,16 +184,17 @@ jobs:
 workflows:
   default:
     jobs:
-      - build
-      - push-docker-image
-          requires: [build]
-      - deploy-new:
-         requires: [push-docker-image]
-            filters:
-              branches:
-                only: [main-update]
-      - deploy-rolling-update-kubernetes:
-         requires: [push-docker-image]
-            filters:
-              branches:
-                only: [rolling-update]
+#      - build
+#      - push-docker-image
+#          requires: [build]
+#      - deploy-new:
+#         requires: [push-docker-image]
+#            filters:
+#              branches:
+#                only: [main-update]
+#      - deploy-rolling-update-kubernetes:
+#         requires: [push-docker-image]
+#            filters:
+#              branches:
+#                only: [rolling-update]
+      - deploy-test
