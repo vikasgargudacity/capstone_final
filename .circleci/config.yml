@@ -59,12 +59,12 @@ jobs:
           name: Build & uploading the Docker image
           command: |
             # Building Docker Image
-            docker build --tag=capstone-project . 
+            docker build --tag=capstone-project:latest . 
             docker image ls
             
             # Upload Docker Image
-            sudo docker login -u vikasgarg0385 -p Arisia1111% docker.io            
-            docker push vikasgarg0385/capstone-project                        
+            sudo docker login -u vikasgarg0385 -p Arisia1111%            
+            docker push vikasgarg0385/capstone-project:latest                        
             
   deploy-new:
     docker:
@@ -109,8 +109,8 @@ jobs:
 workflows:
   default:
     jobs:
-      - build
-      - push-docker-image:
-          requires: [build]
-      - deploy-new: 
-         requires: [push-docker-image]
+#      - build
+      - push-docker-image
+#          requires: [build]
+#      - deploy-new: 
+#         requires: [push-docker-image]
