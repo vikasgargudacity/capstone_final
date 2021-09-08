@@ -12,7 +12,7 @@ jobs:
   build:
     docker:
       # Use the same Docker base as the project
-      - image: ubuntu
+      - image: cimg/python
       
     working_directory: ~/repo
     
@@ -31,7 +31,6 @@ jobs:
           name: Create vitual environment
           command: |
             # Create virtual environment
-            sudo apt-get install python3-venv
             python3 -m venv ~/.capstone
             source ~/.capstone/bin/activate
       - run:
