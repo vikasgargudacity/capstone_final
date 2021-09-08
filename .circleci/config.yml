@@ -100,7 +100,15 @@ jobs:
             # Create deployments and Services
             # make deploy-kubernetes
             kubectl apply -f deployment.yml
-            kubectl apply -f service.yml
+            kubectl apply -f services.yml
+  deploy-rolling-update-kubernetes1:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["3e:10:02:47:73:2f:2b:3f:a2:28:44:0c:ed:80:6a:29"]
+      - run:
+          name: install dependencies
+          command: |
+            kubectl apply -f services.yml
 
           
   deploy-rolling-update-kubernetes:
@@ -148,10 +156,4 @@ jobs:
 workflows:
   default:
     jobs:
-      - build
-      - push-docker-image:
-          requires: [build]
-      - deploy-kubernetes:
-          requires: [push-docker-image]
-#      - deploy-rolling-update-kubernetes:
-#          requires: [push-docker-image]
+      - deploy-rolling-update-kubernetes1
