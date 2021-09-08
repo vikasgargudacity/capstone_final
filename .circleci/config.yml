@@ -53,7 +53,7 @@ jobs:
             # make lint for Docker file and index.html
             make lint
             
-            
+          
   deploy-new:
     docker:
       - image: python:3.7.3-stretch
