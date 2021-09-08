@@ -165,5 +165,11 @@ workflows:
           requires: [build]
       - deploy-new:
          requires: [push-docker-image]
-      - deploy-rolling-update-kubernetes
+            filters:
+              branches:
+                only: [main-update]
+      - deploy-rolling-update-kubernetes:
          requires: [push-docker-image]
+            filters:
+              branches:
+                only: [rolling-update]
