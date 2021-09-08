@@ -143,7 +143,16 @@ jobs:
             aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name capstone-proj
             
             # make rolling-update
-            kubectl set image deployment/capstone-proj capstone-proj=$DOCKERHUB_USERID/capstone-proj:latest
+            kubectl set image deployment/capstone-proj capstone-proj=$DOCKERHUB_IMAGE
+            
+            echo "Listing deployments"
+            kubectl get deployments -o wide
+            echo
+            echo "Listing services"
+            kubectl get services -o wide
+            echo
+            echo "Listing pods"
+            kubectl get pods -o wide
 
 workflows:
   default:
