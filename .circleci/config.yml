@@ -147,7 +147,7 @@ workflows:
       - build
       - push-docker-image:
           requires: [build]
-      - deploy-new:
+      - deploy-kubernetes:
          requires: [push-docker-image]
 #      - deploy-rolling-update-kubernetes:
 #         requires: [push-docker-image]
