@@ -12,10 +12,7 @@ jobs:
   build:
     docker:
       # Use the same Docker base as the project
-      - image: cimg/python
-        auth:
-          username: $DOCKERHUB_USERID
-          password: $DOCKERHUB_PASSWORD  
+      - image: cimg/python:3.7.11-node
           
     working_directory: ~/repo
     
