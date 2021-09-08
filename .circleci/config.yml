@@ -110,7 +110,7 @@ workflows:
   default:
     jobs:
 #      - build
-      - push-docker-image
+#      - push-docker-image
 #          requires: [build]
-#      - deploy-new: 
+      - deploy-new
 #         requires: [push-docker-image]
