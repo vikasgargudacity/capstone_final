@@ -13,7 +13,7 @@ dockerpath=vikasgarg0385/${DOCKER_IMAGE}
 # Authenticate & tag
 echo "Docker ID and Image: $dockerpath"
 sudo docker tag ${DOCKER_IMAGE} $dockerpath
-sudo docker login -u "vikasgarg0385" docker.io
+sudo docker login -u "$DOCKERHUB_USERID" -p $DOCKERHUB_PASSWORD docker.io
 
 # Step 3:
 # Push image to a docker repository
