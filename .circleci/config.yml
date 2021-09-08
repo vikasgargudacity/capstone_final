@@ -20,11 +20,7 @@ jobs:
       
     # Download and cache dependencies
       - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-          # fallback to using the latest cache if no exact match is found
-            - v1-dependencies      
-      
+          keys: [capstone]
       # Create the reqiured virtual environment and install the dependent libraries
       - run:
           name: Create vitual environment
@@ -40,19 +36,35 @@ jobs:
             
             # Install hadolint
             make install-hadolint
-
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" })
       - run:
           name: run lint
           command: |
             source ~/.capstone/bin/activate
             # make lint for Docker file and index.html
             make lint
-            
-         
+      - save_cache:
+          paths: [ ~/.capstone/bin/activate]
+          key: capstone
+
+
+  push-docker-image:
+    docker:
+      - image: docker:20.10.8-git
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [capstone]      
+      - setup_remote_docker
+      - run:
+          name: Build Docker image
+          command: |
+            make build-docker
+            make upload-docker
+      - save_cache:
+          paths: [ ~/.capstone/bin/activate]
+          key: capstone
+
+
   deploy-new:
     docker:
       - image: python:3.7.3-stretch
@@ -61,6 +73,8 @@ jobs:
 
     steps:
       - checkout
+      - restore_cache:
+          keys: [build]      
       - add_ssh_keys:
           fingerprints: ["3e:10:02:47:73:2f:2b:3f:a2:28:44:0c:ed:80:6a:29"]
       - run:
@@ -92,11 +106,5 @@ workflows:
   default:
     jobs:
       - build
-      - docker/publish:
-          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-          update-description: true
-          tag: "latest"
-          deploy: true
-          requires: [build]
       - deploy-new: 
           requires: [docker/publish]
