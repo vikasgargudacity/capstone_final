@@ -59,9 +59,7 @@ jobs:
           name: Build & uploading the Docker image
           command: |
             # Building Docker Image
-            docker build --tag=capstone-project .
- 
-#            docker build --tag=$DOCKER_IMAGE .
+            docker build --tag=capstone-project . 
             docker image ls
             
             # Upload Docker Image
