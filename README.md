@@ -57,14 +57,19 @@ python3 -m venv ~/.capstone
 source ~/.capstone/bin/activate
 ```
 
-- Updated the requirements.txt to inlude pylint and pytest and then run install all the required libraries, dependencies as per requirements file. 
+- Install various dependencies. 
 ```bash
-make install-for-build
+make install-dependencies
 ```
 
 - Install hadolint
 ```bash
 make install-hadolint
+```
+
+- Install awscli
+```bash
+make install-awscli
 ```
 
 - Install kubectl
