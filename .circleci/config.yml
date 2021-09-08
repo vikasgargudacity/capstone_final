@@ -112,5 +112,5 @@ workflows:
       - build
       - push-docker-image:
           requires: [build]
-     - deploy-new: 
+      - deploy-new: 
          requires: [push-docker-image]
