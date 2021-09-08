@@ -99,9 +99,9 @@ jobs:
             make create-eks-cluster
             
             # Create deployments and Services
-#            make deploy-kubernetes
-            kubectl apply -f deployment.yml
-            kubectl apply -f service.yml
+            make deploy-kubernetes
+#            kubectl apply -f deployment.yml
+#            kubectl apply -f service.yml
 
           
   deploy-rolling-update-kubernetes:
@@ -144,7 +144,7 @@ jobs:
             aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name capstone-proj
             
 #            make rolling-update
-            kubectl set image deployment/capstone-proj-rolling capstone-proj=vikasgarg0385/${DEPLOYMENT_NAME}:latest
+            kubectl set image deployment/capstone-proj-rolling capstone-proj=$DOCKERHUB_USERID/capstone-proj:latest
 
 workflows:
   default:
