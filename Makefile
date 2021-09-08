@@ -4,8 +4,8 @@ REGION="us-west-2"
 CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
 
 install-dependencies:
-	sudo apt-get install -y nodejs
-	sudo apt-get install docker.io
+#	sudo apt-get install -y nodejs
+#	sudo apt-get install docker.io
 	sudo npm install -g htmllint-cli
 	sudo htmllint init
 
