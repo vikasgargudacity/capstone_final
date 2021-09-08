@@ -19,11 +19,6 @@ jobs:
     steps:
       - checkout
       # Create the reqiured virtual environment and install the dependent libraries
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
       - run:
           name: Create vitual environment
           command: |
@@ -43,7 +38,6 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
       - run:
           name: run lint
           command: |
@@ -61,7 +55,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: [""]
+          fingerprints: ["3e:10:02:47:73:2f:2b:3f:a2:28:44:0c:ed:80:6a:29"]
       - run:
           name: install dependencies
           command: |
