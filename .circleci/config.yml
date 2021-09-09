@@ -261,9 +261,9 @@ workflows:
       - build
       - push-docker-image:
           requires: [build]
-      - deploy-kubernetes:
-          requires: [push-docker-image]
-#      - deploy-rolling-update-kubernetes:
+#      - deploy-kubernetes:
 #          requires: [push-docker-image]
+      - deploy-rolling-update-kubernetes:
+          requires: [push-docker-image]
 #      - rollback-updates-kubernetes    
 #      - cleanup-resources
