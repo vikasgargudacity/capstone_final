@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-CLUSTER="capstone-project"
-REGION="us-west-2"
+CLUSTER="$PROJECT_NAME"
+REGION="$AWS_DEFAULT_REGION"
 CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
 
 if kubectl config get-clusters | grep -q ${CLUSTER_NAME}; then
