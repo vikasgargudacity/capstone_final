@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $PROJECT_NAME
+  name: capstone-final
   labels: 
-    app: $PROJECT_NAME
+    app: capstone-final
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: $PROJECT_NAME
+      app: capstone-final
   template:
     metadata:
       labels:
-        app: $PROJECT_NAME
+        app: capstone-final
         role: rolling-update
     spec:
       containers:
-      - name: $PROJECT_NAME
-        image: $DOCKERHUB_USERID/$IMAGE_NAME:$IMAGE_VERSION
+      - name: capstone-final
+        image: vikasgarg0385/capstone-final:New
         imagePullPolicy: "Always"
         ports:
         - containerPort: 80
