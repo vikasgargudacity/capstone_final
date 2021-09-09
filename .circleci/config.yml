@@ -21,23 +21,23 @@ jobs:
           name: Create vitual environment
           command: |
             # Create virtual environment
-            python3 -m venv ~/.capstone
-            source ~/.capstone/bin/activate
+            python3 -m venv ~/.$PROJECT_NAME
+            source ~/.$PROJECT_NAME/bin/activate
       - run:
           name: Install dependencies
           command: |            
-            # install nodejs, dockerio, npm, htmllint
-            make install-dependencies
+            # install npm, htmllint
+            sudo npm install -g htmllint-cli
+            sudo htmllint init
             
             # Install hadolint
             make install-hadolint
       - run:
           name: run lint
           command: |
-            source ~/.capstone/bin/activate
+            source ~/.$PROJECT_NAME/bin/activate
             # make lint for Docker file and index.html
             make lint
-
   push-docker-image:
     docker:
       - image: circleci/golang:1.15
@@ -50,12 +50,12 @@ jobs:
           name: Build & uploading the Docker image
           command: |
             # Building Docker Image
-            docker build -t $DOCKERHUB_IMAGE .
+            docker build -t $DOCKERHUB_USERID/$IMAGE_NAME:$IMAGE_VERSION .
             docker image ls
             
             # Upload Docker Image
             docker login -u $DOCKERHUB_USERID -p $DOCKERHUB_PASSWORD
-            docker push $DOCKERHUB_IMAGE                   
+            docker push $DOCKERHUB_USERID/$IMAGE_NAME:$IMAGE_VERSION
             
   deploy-kubernetes:
     docker:
@@ -87,13 +87,11 @@ jobs:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
-
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
             export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
             
             aws configure list
-
             # Create Kubernetes Cluster
             make create-eks-cluster
             
@@ -133,17 +131,16 @@ jobs:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
-
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
             export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
             
             aws configure list
             
-            aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name capstone-proj
+            aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $PROJECT_NAME
             
             # make rolling-update
-            kubectl set image deployment/capstone-proj capstone-proj=$DOCKERHUB_IMAGE
+            kubectl set image deployment/$PROJECT_NAME $PROJECT_NAME=$DOCKERHUB_USERID/$IMAGE_NAME:$IMAGE_VERSION
             
             echo "Listing deployments"
             kubectl get deployments -o wide
@@ -153,14 +150,121 @@ jobs:
             echo
             echo "Listing pods"
             kubectl get pods -o wide
+            
+  rollback-updates-kubernetes:
+    docker:
+      - image: cimg/base:2021.07
+      
+    working_directory: ~/repo
 
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["3e:10:02:47:73:2f:2b:3f:a2:28:44:0c:ed:80:6a:29"]
+      - run:
+          name: install dependencies
+          command: |
+            
+            # Install kubectl
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/kubectl
+            sudo chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin
+            sudo echo 'export PATH=$PATH:$HOME/bin' >> ~/.bash_profile
+            kubectl version --short --client
+            
+            # Install eksctl
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            eksctl version
+            
+            # Install awscli 
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+            
+            aws configure list
+            
+            aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $PROJECT_NAME
+            
+            echo "Listing deployments"
+            kubectl get deployments -o wide
+            
+            # Rollback Updates
+            kubectl rollout undo deployment $PROJECT_NAME
+            kubectl describe pods | grep -i image
+                        
+            echo "Listing deployments"
+            kubectl get deployments -o wide
+            echo
+            echo "Listing services"
+            kubectl get services -o wide
+            echo
+            echo "Listing pods"
+            kubectl get pods -o wide
+  cleanup-resources:
+    docker:
+      - image: cimg/base:2021.07
+      
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["3e:10:02:47:73:2f:2b:3f:a2:28:44:0c:ed:80:6a:29"]
+      - run:
+          name: install dependencies
+          command: |
+            
+            # Install kubectl
+            curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/kubectl
+            sudo chmod +x ./kubectl
+            sudo mv ./kubectl /usr/local/bin
+            sudo echo 'export PATH=$PATH:$HOME/bin' >> ~/.bash_profile
+            kubectl version --short --client
+            
+            # Install eksctl
+            curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+            sudo mv /tmp/eksctl /usr/local/bin
+            eksctl version
+            
+            # Install awscli 
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+            
+            aws configure list
+            
+            aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $PROJECT_NAME
+            
+            # cleanup resources
+            kubectl delete services $PROJECT_NAME
+            echo
+            kubectl delete deployments $PROJECT_NAME
+            
+            echo "Listing deployments"
+            kubectl get deployments -o wide
+            echo
+            echo "Listing services"
+            kubectl get services -o wide
+            echo
+            echo "Listing pods"
+            kubectl get pods -o wide
+            eksctl delete cluster --name $PROJECT_NAME --region $AWS_DEFAULT_REGION
 workflows:
   default:
     jobs:
       - build
       - push-docker-image:
           requires: [build]
-#      - deploy-kubernetes:
-#          requires: [push-docker-image]
-      - deploy-rolling-update-kubernetes:
+      - deploy-kubernetes:
           requires: [push-docker-image]
+#      - deploy-rolling-update-kubernetes:
+#          requires: [push-docker-image]
+#      - rollback-updates-kubernetes    
+#      - cleanup-resources
