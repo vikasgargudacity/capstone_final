@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-DEPLOYMENT_NAME=capstone-proj-deployment
+DEPLOYMENT_NAME=capstone-project
+CLUSTER="capstone-project"
+REGION="us-west-2"
+
 # Remove service & deployment
 kubectl delete services ${DEPLOYMENT_NAME}
 echo
@@ -10,3 +13,8 @@ echo
 kubectl get deployments
 echo
 kubectl get pods
+
+# Delete the Cluster 
+echo
+eksctl delete cluster --name "${CLUSTER}" --region "${REGION_NAME}"
+

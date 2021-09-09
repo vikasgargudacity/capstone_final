@@ -4,13 +4,13 @@ REGION="us-west-2"
 CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
 
 install-dependencies:
-#	sudo apt-get install -y nodejs
-#	sudo apt-get install docker.io
+	sudo apt-get install -y nodejs npm
+	sudo apt-get install docker.io
 	sudo npm install -g htmllint-cli
 	sudo htmllint init
 
 install-awscli:
-	apt install awscli
+	sudo apt install awscli
 
 install-hadolint:
 	./install_hadolint.sh
@@ -37,14 +37,11 @@ upload-docker:
 create-eks-cluster:
 	./create_eks_cluster.sh
 
-deploy-kubernetes: 
+deploy-kubernetes:
 	./deploy_kubernetes.sh
 
 rolling-update:
 	./rolling_updates.sh
-
-rollout-status:
-	./rollout_status.sh
 
 rollback:
 	./rollback.sh
@@ -52,7 +49,3 @@ rollback:
 cleanup-resources:
 	# Remove service & deployment
 	./cleanup_resources.sh
-
-delete-eks-cluster:
-	# delete the cluster
-	./delete_eks_cluster.sh

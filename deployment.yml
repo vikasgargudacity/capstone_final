@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: capstone-proj
+  name: capstone-project
   labels: 
-    app: capstone-proj
+    app: capstone-project
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: capstone-proj
+      app: capstone-project
   template:
     metadata:
       labels:
-        app: capstone-proj
+        app: capstone-project
         role: rolling-update
     spec:
       containers:
-      - name: capstone-proj
-        image: vikasgarg0385/capstone-proj:latest
+      - name: capstone-project
+        image: vikasgarg0385/capstone-project:V1.0
         imagePullPolicy: "Always"
         ports:
         - containerPort: 80

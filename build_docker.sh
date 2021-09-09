@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-DOCKER_IMAGE="capstone-proj:latest"
-
+DOCKER_IMAGE="capstone-project:V2.0"
 
 # Step 1
 # Build image and add a descriptive tag
