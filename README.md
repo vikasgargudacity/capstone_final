@@ -5,43 +5,17 @@
 
 This capstone project showcases the use of several CI/CD tools and cloud services covered in the program [Udacity - AWS Cloud DevOps Engineer.](https://www.udacity.com/course/cloud-dev-ops-nanodegree--nd9991)
 
-### Project Tasks
+## Steps followed for this project are as below: 
 
-Using a CI/CD approach, we build a [Docker](https://www.docker.com/resources/what-container) image and then run it in a [Kubernetes](https://kubernetes.io/) cluster.
-
-The project includes the following main tasks:
-
-* Initialize the Python virtual environment 
-* Install all necessary dependencies 
-* Lints Dockerfile and python code
-* Create a Dockerfile to "containerize" the housing price prediction application
-* Deploy to a public Docker Registry the containerized application 
-* Deploy a Kubernetes cluster
-* Deploy the application
-* Update the app in the cluster, using a rolling-update strategy
-* Delete the cluster
-
-The CirclCI pipeline([config.yml](.circleci/config.yml)) will execute the following steps automatically:
-
-* `make setup`
-* `make install`
-* `make lint`
-* Build and publish the container image
-
-To verify that the app is working, write your deployment's IP into your browser using port 80, like
-`http://localhost:80` or `http://LOAD_BALANCER_IP:80` (according to your environment).
-
----
-### Steps followed for this project are as below: 
-
+### Manually starting K8s:
 - Created an EC2 instance t2.medium and increased the storage to 60GB with SSH 22 port being open. Please note use the the Cloud9 image (ami-06f90483830cf9c0e) as required to ensure it installs the required Python version 3.7. 
 
 - Logged in using UBUNTU terminal from Windows Desktop and SSH into the system. 
 
 - Ran the command below to clone the repository from GITHUB to EC2 instance and then CD into the directory. 
 ```bash
-git clone https://github.com/vikasgargudacity/capstone
-cd capstone
+git clone https://github.com/vikasgargudacity/capstone_final
+cd capstone_final
 ```
 
 - Installing various dependencies related to Python3 Virtual environment , make commnand etc.
@@ -57,7 +31,7 @@ python3 -m venv ~/.capstone
 source ~/.capstone/bin/activate
 ```
 
-- Install various dependencies. 
+- Install various dependencies such as nodejs, awscli, npm, Docker.io, htmllint-cli
 ```bash
 make install-dependencies
 ```
@@ -65,11 +39,6 @@ make install-dependencies
 - Install hadolint
 ```bash
 make install-hadolint
-```
-
-- Install awscli
-```bash
-make install-awscli
 ```
 
 - Install kubectl
@@ -81,7 +50,7 @@ make install-kubectl
 make install-eksctl
 ```
 
-- Run the lint command to run the lint for the Dockerfile and index.html
+- Run the lint command to run the lint for the Dockerfile and index.html. Error has been introduced for the first run in the HTML Tag to showcase unsuccessful LINT and the Successful Lint
 ```bash
 make lint
 ```
@@ -116,18 +85,49 @@ make create-eks-cluster
 
 - create Kubernetes deployments and Services.   
 ```bash
-make create-eks-cluster
+make deploy-kubernetes
 ```
-
 
 - perform the rolling updates
 ```bash
 make deploy-kubernetes
 ```
 
-# Kubenetes architecture with a Master Node (Control Plane) and two sub nodes will be created. There will be load balancer which will be created under the first stack. Take the Load Balancer Name from the Resources Section of the Stacks being created for the Master Cluster and try that it should display the required HTML page.  
-
-- delete the deployments, services and EKS clusters created.
+- cleanup resources - Delete the deployments, services and EKS clusters created.
 ```bash
+make cleanup-resources
 make delete-eks-cluster
+```
+
+### Doing it Via CICD:
+
+- Run the first build job to perform the below 3 steps. 
+```bash
+Create Virtual environemtn
+Install dependencies 
+Run lint for the Index file (have attached screenshot with failed and passed lint scenario)
+```
+
+- Run the next job to build and push the image to the docker hub. 
+```bash
+Build & uploading the Docker image
+```
+
+- Run the third job to install K8s related dependencies, awscli, configure AWS Region, create Kubernetes Cluster, Deployment and Services. 
+```bash
+install kubectl
+install eksctl
+install awscli
+configure the AWS region
+create K8s cluster
+Create the deployment and services
+```
+
+- Rolling Deployment job (only to be executed when there is a commit on the rolling-update branch)  
+```bash
+install kubectl
+install eksctl
+install awscli
+configure the AWS region
+Perform rolling updates to the K8s cluster nodes
 ```
