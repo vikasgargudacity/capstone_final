@@ -124,7 +124,8 @@ IMAGE_VERSION	=> Version of the Image (will be set as "new" for first run and "u
 PROJECT_NAME	=> Name of the Project  
 ``` 
 
-#### Creating the cluster and deploy the first Version of the APP. Run the below 3 jobs from the circleci/config file.
+### A. First Time Deplpoyment 
+Creating the cluster and deploy the first Version of the APP. Run the below 3 jobs from the circleci/config file.
 
 ##### build: 
 - The build job will perform the below 3 steps. 
@@ -149,7 +150,7 @@ create K8s cluster
 Create the deployment and services
 ```
 
-#### Perform Rolling Updates
+### B. Perform Rolling Updates
 update the index.html file for next version and run the below jobs . Remember to update the IMAGE_VERSION as "update"
 ##### build: 
 ##### push-docker-image: 
@@ -162,7 +163,7 @@ install awscli
 configure the AWS region
 Perform rolling updates to the K8s cluster nodes
 ```
-#### Perform Rollback : 
+### C. Perform Rollback : 
 Run the below one Rollback job only.
 ##### rollback-updates-kubernetes:
 - Rolling back the previous updates. 
@@ -173,7 +174,7 @@ install awscli
 configure the AWS region
 Perform  to rollback the application to previous version on the K8s cluster nodes
 ```
-#### Cleanup Resources: 
+### D. Cleanup Resources: 
 run the one last job as below. 
 ##### cleanup-resources:
 - Delete deployments, services, and Clusters created. 
