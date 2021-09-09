@@ -1,9 +1,14 @@
 ## CircleCI status badge  
-[![CircleCI](https://circleci.com/gh/vikasgargudacity/project4_final/tree/master.svg?style=svg)](https://circleci.com/gh/vikasgargudacity/project4_final/tree/master)
+[![CircleCI](https://circleci.com/gh/vikasgargudacity/capstone_final/tree/master.svg?style=svg)](https://circleci.com/gh/vikasgargudacity/capstone_final/tree/master)
 
 ## Project Overview
 
 This capstone project showcases the use of several CI/CD tools and cloud services covered in the program [Udacity - AWS Cloud DevOps Engineer.](https://www.udacity.com/course/cloud-dev-ops-nanodegree--nd9991)
+
+
+## Outputs Screenshots are attached in the below two files.
+Manual Kubernetes Deployment
+Kubernetes Deployment via CICD pipeline
 
 ## Steps followed for this project are as below: 
 
