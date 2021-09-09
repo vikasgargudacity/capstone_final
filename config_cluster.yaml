@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: $PROJECT_NAME
+  name: capstone-final
   region: us-west-2
 
 iam:
@@ -18,4 +18,4 @@ nodeGroups:
     volumeSize: 80
     ssh:
       allow: true
-      publicKeyName: $PROJECT_PEMFILE
+      publicKeyName: capstone-final
