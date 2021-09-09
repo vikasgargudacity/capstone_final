@@ -1,7 +1,7 @@
 ## The Makefile includes instructions on environment setup and lint tests
-CLUSTER="capstone-proj"
-REGION="us-west-2"
-CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
+IMAGE_NAME="capstone-project"	
+IMAGE_VERSION="V1.0"
+PROJECT_NAME="capstone-project"
 
 install-dependencies:
 	sudo apt-get install -y nodejs npm
