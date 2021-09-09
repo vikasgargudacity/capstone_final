@@ -50,12 +50,12 @@ jobs:
           name: Build & uploading the Docker image
           command: |
             # Building Docker Image
-            docker build -t $DOCKERHUB_IMAGE-1 .
+            docker build -t $DOCKERHUB_IMAGE .
             docker image ls
             
             # Upload Docker Image
             docker login -u $DOCKERHUB_USERID -p $DOCKERHUB_PASSWORD
-            docker push $DOCKERHUB_IMAGE-1                      
+            docker push $DOCKERHUB_IMAGE                   
             
   deploy-kubernetes:
     docker:
@@ -143,7 +143,7 @@ jobs:
             aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name capstone-proj
             
             # make rolling-update
-            kubectl set image deployment/capstone-proj capstone-proj=$DOCKERHUB_IMAGE-1
+            kubectl set image deployment/capstone-proj capstone-proj=$DOCKERHUB_IMAGE
             
             echo "Listing deployments"
             kubectl get deployments -o wide
