@@ -1,15 +1,14 @@
 
 #!/usr/bin/env bash
-DEPLOYMENT_NAME=capstone-project
-IMAGE_NAME=registry.hub.docker.com/vikasgarg0385/${DEPLOYMENT_NAME}:V2.0
 kubectl get deployments -o wide
-kubectl set image deployments/${DEPLOYMENT_NAME} \
-	${DEPLOYMENT_NAME}=${IMAGE_NAME}
+# make rolling-update
+kubectl set image deployment/$PROJECT_NAME $PROJECT_NAME=$DOCKERHUB_USERID/$IMAGE_NAME:$IMAGE_VERSION
+
+echo "Listing deployments"
+kubectl get deployments -o wide
 echo
-kubectl get deployments -o wide
-kubectl describe pods | grep -i image
+echo "Listing services"
+kubectl get services -o wide
+echo
+echo "Listing pods"
 kubectl get pods -o wide
-
-# Rolling Status
-kubectl rollout status deployment ${DEPLOYMENT_NAME}
-
