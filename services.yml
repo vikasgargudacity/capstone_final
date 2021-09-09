@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: $PROJECT_NAME
+  name: capstone-final
 spec:
   selector:
-    app: $PROJECT_NAME
+    app: capstone-final
   ports:
     - port: 8000
       targetPort: 80
