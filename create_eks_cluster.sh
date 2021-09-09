@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-CLUSTER="$PROJECT_NAME"
-REGION="$AWS_DEFAULT_REGION"
-CLUSTER_NAME="${CLUSTER}.${REGION}.eksctl.io"
+CLUSTER_NAME="${PROJECT_NAME}.${AWS_DEFAULT_REGION}.eksctl.io"
 
 if kubectl config get-clusters | grep -q ${CLUSTER_NAME}; then
     echo "============================================================"
