@@ -96,7 +96,6 @@ jobs:
             make create-eks-cluster
             
             # Create deployments and Services
-            # make deploy-kubernetes
             kubectl apply -f deployment.yml
             kubectl apply -f services.yml
   
@@ -139,7 +138,7 @@ jobs:
             
             aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $PROJECT_NAME
             
-            # make rolling-update
+            # perform rolling-update
             kubectl set image deployment/$PROJECT_NAME $PROJECT_NAME=$DOCKERHUB_USERID/$IMAGE_NAME:$IMAGE_VERSION
             
             echo "Listing deployments"
